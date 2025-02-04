@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation Template to create an S3 Bucket
+
+Resources:
+  MyS3Bucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: 'my-unique-bucket-name'
+      AccessControl: 'Private'  # Options: Private, PublicRead, PublicReadWrite, AuthenticatedRead, etc.
+      VersioningConfiguration:
+        Status: 'Enabled'  # Enable versioning for the bucket
+      LifecycleConfiguration:
+        Rules:
+          - Status: 'Enabled'
+            ExpirationInDays: 365  # Automatically delete objects after 365 days
+            Prefix: 'logs/'  # Apply rule only to objects with the 'logs/' prefix
+      LoggingConfiguration:
+        DestinationBucketName: 'my-log-bucket'
+        LogFilePrefix: 's3-logs/'
+      Tags:
+        - Key: 'Environment'
+          Value: 'Production'
+        - Key: 'Project'
+          Value: 'MyProject'
